@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Alkaloid Effect Grid — 4-Class Comparison Matrix</title>
+<style>
+  :root{
+    --paper:#efebce;
+    --paper-2:#f5f2df;
+    --ink:#064013;
+    --ink-soft:#3a5c42;
+    --line:#064013;
+    --mark-d:#064013;   /* documented */
+    --mark-c:#7a6a2f;   /* claimed */
+    --mark-x:#8c3b22;   /* disputed */
+    --tier3-bg:rgba(140,59,34,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    font-feature-settings:"tnum";
+    line-height:1.35;
+  }
+  /* ---------- two-tier sticky header ---------- */
+  header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:var(--paper)}
+  .bar1{
+    display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+    padding:.55rem 1.2rem;border-bottom:1px solid var(--line);
+  }
+  .bar1 h1{
+    font-size:1.05rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    font-variant:small-caps;
+  }
+  .bar1 .meta{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap}
+  .bar2{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .9rem;padding:.45rem 1.2rem;background:var(--paper-2)}
+  .fgroup{display:flex;align-items:center;gap:.35rem;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+  .fgroup .lbl{font-weight:700;margin-right:.15rem}
+  .pill{
+    border:1px solid var(--line);background:transparent;color:var(--ink);
+    font:inherit;font-size:.68rem;letter-spacing:.05em;padding:.12rem .5rem;cursor:pointer;
+    font-variant:small-caps;
+  }
+  .pill:hover{background:var(--ink);color:var(--paper)}
+  .pill.on{background:var(--ink);color:var(--paper)}
+  #search{
+    border:none;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);
+    font:inherit;font-size:.8rem;padding:.15rem .1rem;width:11rem;outline:none;
+  }
+  #search:focus{border-bottom:2px solid var(--ink)}
+  /* ---------- legend ---------- */
+  .legend{
+    display:flex;flex-wrap:wrap;gap:1.2rem;padding:.5rem 1.2rem;font-size:.7rem;
+    letter-spacing:.04em;border-bottom:1px solid var(--line);background:var(--paper);
+  }
+  .legend b{font-variant:small-caps;letter-spacing:.12em}
+  /* ---------- table ---------- */
+  .wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.8rem}
+  thead th{
+    background:var(--paper);border-bottom:1px solid var(--line);
+    font-variant:small-caps;letter-spacing:.1em;font-size:.68rem;text-align:left;
+    padding:.35rem .5rem;cursor:pointer;user-select:none;white-space:nowrap;
+  }
+  thead th:hover{background:var(--paper-2)}
+  thead th .dir{font-size:.6rem}
+  tbody td{border-bottom:1px solid var(--line);padding:.3rem .5rem;vertical-align:top}
+  tbody tr.sub{cursor:pointer}
+  tbody tr.sub:hover td{background:var(--paper-2)}
+  td.name{font-weight:700;white-space:nowrap}
+  td.name .bnd{font-weight:400;font-size:.62rem;color:var(--mark-x);letter-spacing:.05em}
+  td.plant{font-style:italic;font-size:.72rem;color:var(--ink-soft)}
+  .mk{font-family:'Courier New',monospace;font-weight:700;font-size:.85rem;text-align:center}
+  .mk.D{color:var(--mark-d)} .mk.C{color:var(--mark-c)} .mk.X{color:var(--mark-x)} .mk.N{color:rgba(6,64,19,.25)}
+  .tier{display:inline-block;min-width:1.5rem;text-align:center;border:1px solid var(--line);font-size:.68rem;padding:.05rem .2rem}
+  tr.t3 td{background:var(--tier3-bg)}
+  .dep{font-size:.72rem;text-transform:capitalize}
+  /* ---------- expanded detail row ---------- */
+  tr.detail td{padding:.6rem .5rem .8rem;background:var(--paper-2)}
+  .dcard{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem 1.4rem;font-size:.76rem}
+  .dcard h4{font-variant:small-caps;letter-spacing:.15em;font-size:.66rem;border-bottom:1px solid var(--line);margin-bottom:.2rem}
+  .dcard .full{grid-column:1/-1}
+  /* ---------- summary strip ---------- */
+  #stats{padding:.5rem 1.2rem;font-size:.7rem;letter-spacing:.05em;border-bottom:1px solid var(--line)}
+  /* ---------- footer ---------- */
+  footer{padding:1rem 1.2rem 2.5rem;font-size:.68rem;color:var(--ink-soft);border-top:1px solid var(--line);margin-top:1.5rem}
+  footer b{font-variant:small-caps;letter-spacing:.12em}
+  @media (max-width:900px){ .bar1 h1{font-size:.85rem} }
+  @media print{
+    header{position:static} .bar2,#search,.legend .noprint{display:none}
+    body{background:#fff} tr.detail{display:table-row !important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar1">
+    <h1>Plant Alkaloid Effect Grid</h1>
+    <span class="meta" id="metaLine"></span>
+  </div>
+  <div class="bar2">
+    <span class="fgroup"><span class="lbl">Class</span>
+      <button class="pill cls on" data-k="stim">Stim</button>
+      <button class="pill cls on" data-k="mood">Mood</button>
+      <button class="pill cls on" data-k="calm">Calm</button>
+      <button class="pill cls on" data-k="enh">Enh</button>
+    </span>
+    <span class="fgroup"><span class="lbl">Evidence</span>
+      <button class="pill ev" data-k="D">Documented</button>
+      <button class="pill ev" data-k="C">Claimed</button>
+      <button class="pill ev" data-k="X">Disputed</button>
+    </span>
+    <span class="fgroup"><span class="lbl">Safety</span>
+      <button class="pill tierf on" data-k="1">Tier 1</button>
+      <button class="pill tierf on" data-k="2">Tier 2</button>
+      <button class="pill tierf on" data-k="3">Tier 3</button>
+    </span>
+    <span class="fgroup"><span class="lbl">Hits ≥</span>
+      <button class="pill hits on" data-k="0">Any</button>
+      <button class="pill hits" data-k="2">2</button>
+      <button class="pill hits" data-k="3">3</button>
+    </span>
+    <input id="search" type="text" placeholder="Search substance or plant…">
+  </div>
+</header>
+
+<div class="legend">
+  <span><b>Effect marks</b>&ensp;<span class="mk D">●</span> Documented&ensp;<span class="mk C">◐</span> Claimed&ensp;<span class="mk X">✕</span> Disputed&ensp;<span class="mk N">·</span> none</span>
+  <span><b>Safety tiers</b>&ensp;1 established safe&ensp;2 borderline + caveats&ensp;3 excluded (shown shaded)</span>
+  <span class="noprint"><b>Use</b>&ensp;click a row for full detail; click column headers to sort</span>
+</div>
+
+<div id="stats"></div>
+
+<div class="wrap">
+<table id="grid">
+  <thead><tr>
+    <th data-c="name">Substance <span class="dir"></span></th>
+    <th data-c="plant">Source plant</th>
+    <th data-c="stim">Stim</th>
+    <th data-c="mood">Mood</th>
+    <th data-c="calm">Calm</th>
+    <th data-c="enh">Enh</th>
+    <th data-c="hits">Hits</th>
+    <th data-c="tier">Tier</th>
+    <th data-c="dep">Dependence</th>
+    <th data-c="legal">Legal (US/EU)</th>
+  </tr></thead>
+  <tbody id="tbody"></tbody>
+</table>
+</div>
+
+<footer>
+  <b>Plant Alkaloid Effect Grid</b> — compiled <span id="fdate"></span> from a multi-agent evidence review (248 referenced sources; companion report: <i>Plant Alkaloids That Are Safe to Consume and Produce Positive Effects</i>).<br>
+  Educational reference only — not medical advice, not a usage or dosing guide. “Claimed” = traditional use or user reports without human trials. Legal status changes rapidly; verify locally.<br>
+  <b>To update:</b> edit <code>data.js</code> (one entry per substance, documented at the top of that file) and reload this page.
+</footer>
+
+<script src="data.js"></script>
+<script>
+(function(){
+  const MARKS = {D:'●', C:'◐', X:'✕'};
+  const state = { cls:new Set(['stim','mood','calm','enh']), ev:null, tiers:new Set([1,2,3]), minHits:0, q:'', sort:'name', dir:1 };
+
+  const hits = d => GRID_META.classes.filter(c=>d.fx[c.key]).length;
+  const hitClasses = d => GRID_META.classes.filter(c=>d.fx[c.key]).map(c=>c.label);
+
+  function visible(){
+    return GRID_DATA.filter(d=>{
+      if(!state.tiers.has(d.tier)) return false;
+      if(hits(d) < state.minHits) return false;
+      if(state.ev){
+        // keep row only if it has the chosen evidence status in a VISIBLE class column
+        const ok = GRID_META.classes.some(c=> state.cls.has(c.key) && d.fx[c.key]===state.ev);
+        if(!ok) return false;
+      }
+      if(state.q){
+        const q = state.q.toLowerCase();
+        if(!(d.name.toLowerCase().includes(q) || d.plant.toLowerCase().includes(q))) return false;
+      }
+      return true;
+    }).sort((a,b)=>{
+      let va,vb;
+      if(state.sort==='hits'){ va=hits(a); vb=hits(b); }
+      else if(state.sort==='tier'){ va=a.tier; vb=b.tier; }
+      else if(['stim','mood','calm','enh'].includes(state.sort)){ const w={D:3,C:2,X:1}; va=w[a.fx[state.sort]]||0; vb=w[b.fx[state.sort]]||0; }
+      else { va=(a[state.sort]||'').toLowerCase(); vb=(b[state.sort]||'').toLowerCase(); }
+      return (va<vb?-1:va>vb?1:0)*state.dir;
+    });
+  }
+
+  function cell(v){
+    if(!v) return '<td class="mk N">·</td>';
+    return `<td class="mk ${v}" title="${v==='D'?'Documented':v==='C'?'Claimed':'Disputed'}">${MARKS[v]}</td>`;
+  }
+
+  function render(){
+    const rows = visible();
+    const tb = document.getElementById('tbody');
+    tb.innerHTML='';
+    rows.forEach(d=>{
+      const tr=document.createElement('tr');
+      tr.className='sub'+(d.tier===3?' t3':'');
+      tr.innerHTML =
+        `<td class="name">${d.name}${d.alkaloid==='boundary'?'<br><span class="bnd">◦ boundary entry</span>':''}</td>`+
+        `<td class="plant">${d.plant}</td>`+
+        cell(d.fx.stim)+cell(d.fx.mood)+cell(d.fx.calm)+cell(d.fx.enh)+
+        `<td class="mk" style="color:var(--ink)">${hits(d)||'—'}</td>`+
+        `<td><span class="tier">T${d.tier}</span></td>`+
+        `<td class="dep">${d.dep}</td>`+
+        `<td style="font-size:.68rem">${d.legal}</td>`;
+      const det=document.createElement('tr');
+      det.className='detail'; det.style.display='none';
+      det.innerHTML = `<td colspan="10"><div class="dcard">
+        <div><h4>Classifications hit</h4>${hitClasses(d).join(', ')||'None — included as control/counter-example'}</div>
+        <div><h4>Region</h4>${d.region}</div>
+        <div><h4>Dependence</h4 style="text-transform:capitalize">${d.dep}</div>
+        <div><h4>Key interaction</h4>${d.interact}</div>
+        <div><h4>Legal status</h4>${d.legal}</div>
+        <div><h4>Safety tier</h4>Tier ${d.tier} — ${d.tier===1?'established safe':d.tier===2?'borderline, caveats apply':'excluded (toxicity / addiction / legal)'}</div>
+        <div class="full"><h4>Evidence note</h4>${d.note}</div>
+      </div></td>`;
+      tr.addEventListener('click',()=>{ det.style.display = det.style.display==='none'?'table-row':'none'; });
+      tb.appendChild(tr); tb.appendChild(det);
+    });
+    // stats strip
+    const s = {D:0,C:0,X:0};
+    rows.forEach(d=>GRID_META.classes.forEach(c=>{ const v=d.fx[c.key]; if(v) s[v]++; }));
+    document.getElementById('stats').textContent =
+      `${rows.length} substances shown · ${rows.filter(d=>hits(d)>=2).length} hit ≥2 classes · effect marks on screen: ${s.D} documented / ${s.C} claimed / ${s.X} disputed`;
+    // sort indicators
+    document.querySelectorAll('thead th .dir').forEach(e=>e.textContent='');
+    const th=document.querySelector(`thead th[data-c="${state.sort}"] .dir`);
+    if(th) th.textContent = state.dir>0?'▲':'▼';
+  }
+
+  // wire filters
+  document.querySelectorAll('.pill.cls').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.k; state.cls.has(k)?state.cls.delete(k):state.cls.add(k); b.classList.toggle('on'); render();
+  }));
+  document.querySelectorAll('.pill.ev').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.k;
+    if(state.ev===k){ state.ev=null; b.classList.remove('on'); }
+    else { state.ev=k; document.querySelectorAll('.pill.ev').forEach(x=>x.classList.remove('on')); b.classList.add('on'); }
+    render();
+  }));
+  document.querySelectorAll('.pill.tierf').forEach(b=>b.addEventListener('click',()=>{
+    const k=+b.dataset.k; state.tiers.has(k)?state.tiers.delete(k):state.tiers.add(k); b.classList.toggle('on'); render();
+  }));
+  document.querySelectorAll('.pill.hits').forEach(b=>b.addEventListener('click',()=>{
+    state.minHits=+b.dataset.k; document.querySelectorAll('.pill.hits').forEach(x=>x.classList.remove('on')); b.classList.add('on'); render();
+  }));
+  document.getElementById('search').addEventListener('input',e=>{ state.q=e.target.value; render(); });
+  document.querySelectorAll('thead th').forEach(th=>th.addEventListener('click',()=>{
+    const c=th.dataset.c;
+    if(state.sort===c) state.dir*=-1; else { state.sort=c; state.dir=1; }
+    render();
+  }));
+
+  document.getElementById('metaLine').textContent = `${GRID_DATA.length} substances · 4 classifications · compiled ${GRID_META.compiled}`;
+  document.getElementById('fdate').textContent = GRID_META.compiled;
+  render();
+})();
+</script>
+</body>
+</html>
