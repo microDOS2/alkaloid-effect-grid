@@ -130,6 +130,7 @@
 
 <div class="legend">
   <span><b>Effect marks</b>&ensp;<span class="mk D">●</span> Documented&ensp;<span class="mk C">◐</span> Claimed&ensp;<span class="mk X">✕</span> Disputed&ensp;<span class="mk N">·</span> none</span>
+  <span><b>Hits</b> = how many of the 4 classes the substance has a <i>documented or claimed</i> effect in (max 4). Disputed ✕ claims are <u>not</u> counted — they are claims that failed testing.</span>
   <span><b>Safety tiers</b>&ensp;1 established safe&ensp;2 borderline + caveats&ensp;3 excluded (shown shaded)</span>
   <span class="noprint"><b>Use</b>&ensp;click a row for full detail; click column headers to sort</span>
 </div>
@@ -145,7 +146,7 @@
     <th data-c="mood">Mood</th>
     <th data-c="calm">Calm</th>
     <th data-c="enh">Enh</th>
-    <th data-c="hits">Hits</th>
+    <th data-c="hits" title="Number of effect classes (of 4) with a documented or claimed effect. Disputed claims are not counted.">Hits*</th>
     <th data-c="tier">Tier</th>
     <th data-c="dep">Dependence</th>
     <th data-c="legal">Legal (US/EU)</th>
@@ -166,8 +167,9 @@
   const MARKS = {D:'●', C:'◐', X:'✕'};
   const state = { cls:new Set(['stim','mood','calm','enh']), ev:null, tiers:new Set([1,2,3]), minHits:0, q:'', sort:'name', dir:1 };
 
-  const hits = d => GRID_META.classes.filter(c=>d.fx[c.key]).length;
-  const hitClasses = d => GRID_META.classes.filter(c=>d.fx[c.key]).map(c=>c.label);
+  const hits = d => GRID_META.classes.filter(c=>d.fx[c.key]==='D'||d.fx[c.key]==='C').length;
+  const hitClasses = d => GRID_META.classes.filter(c=>d.fx[c.key]==='D'||d.fx[c.key]==='C').map(c=>c.label);
+  const disputedClasses = d => GRID_META.classes.filter(c=>d.fx[c.key]==='X').map(c=>c.label);
 
   function visible(){
     return GRID_DATA.filter(d=>{
@@ -209,14 +211,14 @@
         `<td class="name">${d.name}${d.alkaloid==='boundary'?'<br><span class="bnd">◦ boundary entry</span>':''}</td>`+
         `<td class="plant">${d.plant}</td>`+
         cell(d.fx.stim)+cell(d.fx.mood)+cell(d.fx.calm)+cell(d.fx.enh)+
-        `<td class="mk" style="color:var(--ink)">${hits(d)||'—'}</td>`+
+        `<td class="mk" style="color:var(--ink)" title="Classes with documented or claimed effect">${hits(d)||'—'}</td>`+
         `<td><span class="tier">T${d.tier}</span></td>`+
         `<td class="dep">${d.dep}</td>`+
         `<td style="font-size:.68rem">${d.legal}</td>`;
       const det=document.createElement('tr');
       det.className='detail'; det.style.display='none';
       det.innerHTML = `<td colspan="10"><div class="dcard">
-        <div><h4>Classifications hit</h4>${hitClasses(d).join(', ')||'None — included as control/counter-example'}</div>
+        <div><h4>Classifications hit</h4>${hitClasses(d).join(', ')||'None — included as control/counter-example'}${disputedClasses(d).length?`<br><span style="color:var(--mark-x)">Disputed (not counted): ${disputedClasses(d).join(', ')}</span>`:''}</div>
         <div><h4>Region</h4>${d.region}</div>
         <div><h4>Dependence</h4 style="text-transform:capitalize">${d.dep}</div>
         <div><h4>Key interaction</h4>${d.interact}</div>
