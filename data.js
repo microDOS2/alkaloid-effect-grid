@@ -9,7 +9,9 @@
      plant    : source plant (Latin binomial)
      region   : region of traditional use / origin
      alkaloid : "yes" = true alkaloid | "boundary" = alkaloid-like or
-                alkaloid content unconfirmed (kept for relevance)
+                alkaloid content unconfirmed | "no" = NOT an alkaloid
+                (scope expanded 2026-09-19 to natural compounds; see chem)
+     chem     : (only when alkaloid = "no") the actual compound class
      fx       : effect hits per classification —
                 stim = Stimulation/Energy, mood = Mood Elevation,
                 calm = Calm/Anxiety Reduction, enh = Enhanced Experience
@@ -26,7 +28,7 @@
    ============================================================ */
 
 const GRID_META = {
-  title: "Plant Alkaloid Effect Grid",
+  title: "Natural Compound Effect Grid",
   compiled: "2026-09-19",
   classes: [
     { key: "stim", label: "Stimulation / Energy" },
@@ -338,5 +340,205 @@ const GRID_DATA = [
   { name:"Theophylline", plant:"Camellia sinensis (trace)", region:"Global", alkaloid:"yes",
     fx:{stim:"D",mood:null,calm:null,enh:null}, tier:3, dep:"low",
     interact:"Narrow therapeutic index 10–20 µg/mL", legal:"Prescription drug",
-    note:"Tea trace exposure is inert; pharmaceutical dosing is toxic — fails the casual-consumption criterion." }
+    note:"Tea trace exposure is inert; pharmaceutical dosing is toxic — fails the casual-consumption criterion." },
+
+  // ---------- NON-ALKALOID EXPANSION (scope widened 2026-09-19) ----------
+  // --- Functional fungi ---
+  { name:"Cordycepin", plant:"Cordyceps militaris / sinensis", region:"Tibet/China", alkaloid:"no", chem:"nucleoside",
+    fx:{stim:"X",mood:null,calm:null,enh:null}, tier:2, dep:"none",
+    interact:"Wild C. sinensis arsenic 4.4–16 mg/kg", legal:"DSHEA supplement US; C. militaris unauthorized novel food EU",
+    note:"The energy claim is null in every athlete RCT (Parcell 2004; Earnest 2004); the 1993 runners origin story is a documented doping cover-up. Weeks-scale threshold gains only in elderly/untrained." },
+
+  { name:"Hericenones / erinacines (lion's mane)", plant:"Hericium erinaceus", region:"E. Asia/Global", alkaloid:"no", chem:"diterpene",
+    fx:{stim:null,mood:"D",calm:null,enh:"X"}, tier:1, dep:"none",
+    interact:"Theoretical antiplatelet", legal:"Legal US/EU (fruiting body/water extract)",
+    note:"Weeks-scale mood benefit in small RCTs (Nagano 2010; Vigna 2019, pro-BDNF); acute felt nootropic effect disputed (Henn 2025 null). Cleanest safety record in the fungi category." },
+
+  { name:"Ganoderic acids (reishi)", plant:"Ganoderma lucidum", region:"E. Asia", alkaloid:"no", chem:"triterpene",
+    fx:{stim:null,mood:null,calm:"D",enh:null}, tier:2, dep:"none",
+    interact:"Hepatotoxicity case reports incl. 1 fatal (crude powder + alcohol)", legal:"Legal US/EU",
+    note:"One neurasthenia RCT: wellbeing +38.7% vs +29.7% placebo (p=0.002, 8 wk). Acute calm is claimed only (in vitro GABA-A)." },
+
+  { name:"Chaga actives (betulinic acid, melanins)", plant:"Inonotus obliquus", region:"Boreal forests", alkaloid:"no", chem:"triterpene/polysaccharide",
+    fx:{stim:null,mood:null,calm:null,enh:null}, tier:3, dep:"none",
+    interact:"Oxalate load; avoid with kidney disease", legal:"Legal US; EU novel-food gray zone",
+    note:"Zero human subjective-effect trials — and the worst safety profile here: 6+ oxalate-nephropathy cases, 2 permanent ESRD." },
+
+  // --- Botanical calm/mood ---
+  { name:"Kavalactones", plant:"Piper methysticum (kava)", region:"Pacific Islands", alkaloid:"no", chem:"kavalactone",
+    fx:{stim:null,mood:"C",calm:"D",enh:null}, tier:2, dep:"low",
+    interact:"Sedative additivity; hepatotoxicity debate", legal:"Legal US; patchwork EU (German bans overturned 2015/2024)",
+    note:"Cochrane-positive anxiolysis (tempered by Sarris 2020 null Phase III). WHO/FAO 2016: aqueous noble-root preparations low-risk. The strongest non-alkaloid calm agent." },
+
+  { name:"Crocin / safranal", plant:"Crocus sativus (saffron)", region:"SW Asia/Mediterranean", alkaloid:"no", chem:"carotenoid/monoterpene",
+    fx:{stim:null,mood:"D",calm:"C",enh:null}, tier:1, dep:"none",
+    interact:"Toxic ≥5 g; abortifacient at high dose", legal:"Legal food/supplement US & EU (GRAS)",
+    note:"Multiple meta-analyses: antidepressant effect ≈ fluoxetine/imipramine at 30 mg/day. Among the best-evidenced mood botanicals of any chemistry." },
+
+  { name:"Linalool (Silexan)", plant:"Lavandula angustifolia (lavender)", region:"Mediterranean", alkaloid:"no", chem:"monoterpene",
+    fx:{stim:null,mood:null,calm:"D",enh:null}, tier:1, dep:"none",
+    interact:"—", legal:"Approved drug in Germany (Lasea); supplement US",
+    note:"5-RCT meta-analysis (n=1,320): oral lavender oil ≈ lorazepam 0.5 mg and paroxetine 20 mg in GAD — non-sedating, no dependence, exceptionally clean." },
+
+  { name:"Valerenic acid", plant:"Valeriana officinalis (valerian)", region:"Europe/Asia", alkaloid:"no", chem:"sesquiterpene acid",
+    fx:{stim:null,mood:null,calm:"D",enh:null}, tier:1, dep:"none",
+    interact:"Additive sedation", legal:"Legal US & EU (HMPC monograph)",
+    note:"Documented for sleep; anxiety evidence mixed. Very safe across ages 7–80." },
+
+  { name:"Withanolides (ashwagandha)", plant:"Withania somnifera", region:"India (Ayurveda)", alkaloid:"no", chem:"steroidal lactone",
+    fx:{stim:null,mood:null,calm:"D",enh:null}, tier:2, dep:"none",
+    interact:"Liver-injury case series (26+ patients); thyroid caution", legal:"Legal US; banned Denmark 2023; EU Article 8 review",
+    note:"Anxiolysis documented but low-certainty; safety story deteriorating 2023–2026 with growing hepatotoxicity reports and regulatory escalation." },
+
+  { name:"Rosavins / salidroside (rhodiola)", plant:"Rhodiola rosea", region:"Arctic/Altai", alkaloid:"no", chem:"phenylpropanoid glycoside",
+    fx:{stim:"D",mood:"C",calm:null,enh:null}, tier:1, dep:"none",
+    interact:"Mild activation", legal:"Legal US & EU",
+    note:"Anti-fatigue documented in RCTs (stress/exam fatigue); mood claims weaker. Well tolerated." },
+
+  { name:"Rosmarinic acid (lemon balm)", plant:"Melissa officinalis", region:"Mediterranean", alkaloid:"no", chem:"phenolic acid",
+    fx:{stim:null,mood:null,calm:"D",enh:null}, tier:1, dep:"none",
+    interact:"Theoretical thyroid caution", legal:"Legal US & EU",
+    note:"Meta-analysis SMD −0.98 for anxiety; acute calm at 600 mg in RCTs. Safe." },
+
+  { name:"Apigenin (chamomile)", plant:"Matricaria chamomilla", region:"Europe/W. Asia", alkaloid:"no", chem:"flavonoid",
+    fx:{stim:null,mood:null,calm:"D",enh:null}, tier:1, dep:"none",
+    interact:"Rare Asteraceae allergy", legal:"Legal US & EU",
+    note:"GAD RCTs positive including relapse prevention; very safe." },
+
+  { name:"Xanthohumol / bitter acids (hops)", plant:"Humulus lupulus", region:"Global", alkaloid:"no", chem:"prenylflavonoid",
+    fx:{stim:null,mood:null,calm:"C",enh:null}, tier:1, dep:"none",
+    interact:"Phytoestrogen caution", legal:"Legal US & EU",
+    note:"One crossover pilot RCT for calm; otherwise traditional/beer-context evidence." },
+
+  { name:"Ursolic acid / eugenol (holy basil)", plant:"Ocimum tenuiflorum", region:"India (Ayurveda)", alkaloid:"no", chem:"triterpene/phenylpropene",
+    fx:{stim:null,mood:null,calm:"C",enh:null}, tier:1, dep:"none",
+    interact:"Pregnancy caution", legal:"Legal US & EU",
+    note:"Two positive small RCTs for stress; otherwise traditional." },
+
+  { name:"Asiaticoside / madecassoside (gotu kola)", plant:"Centella asiatica", region:"S/SE Asia", alkaloid:"no", chem:"triterpene saponin",
+    fx:{stim:null,mood:null,calm:"C",enh:null}, tier:2, dep:"none",
+    interact:"Rare hepatotoxicity (LiverTox)", legal:"Legal US & EU",
+    note:"Startle-response RCT plus small/uncontrolled trials; modest evidence." },
+
+  { name:"Bacosides (bacopa)", plant:"Bacopa monnieri", region:"India (Ayurveda)", alkaloid:"no", chem:"saponin",
+    fx:{stim:null,mood:null,calm:"C",enh:"D"}, tier:1, dep:"none",
+    interact:"GI upset", legal:"Legal US & EU",
+    note:"Documented memory/cognition effects (weeks-scale); calm claimed. An 'enhancement' agent, not a felt-mood agent." },
+
+  { name:"Honokiol / magnolol (magnolia bark)", plant:"Magnolia officinalis", region:"China/Japan", alkaloid:"no", chem:"neolignan",
+    fx:{stim:null,mood:null,calm:"C",enh:null}, tier:2, dep:"none",
+    interact:"Sedating; CNS-depressant additivity", legal:"Legal supplement US/EU (extract-dependent)",
+    note:"GABA-A mechanism solid in animals; human data are vendor-funded blends (Relora) — standalone evidence absent." },
+
+  { name:"Hyperforin / hypericin (St John's Wort)", plant:"Hypericum perforatum", region:"Europe", alkaloid:"no", chem:"phloroglucinol/naphthodianthrone",
+    fx:{stim:null,mood:"D",calm:null,enh:null}, tier:2, dep:"none",
+    interact:"Potent CYP3A4/P-gp induction: contraceptive failure, transplant rejection, serotonin syndrome", legal:"Supplement US; regulated herbal medicine EU",
+    note:"Documented for mild-moderate depression (not major). The dominant interaction hazard on this entire grid." },
+
+  { name:"Damiana actives", plant:"Turnera diffusa", region:"Mexico/Central America", alkaloid:"no", chem:"flavonoid/terpenoid",
+    fx:{stim:null,mood:"X",calm:"C",enh:null}, tier:2, dep:"none",
+    interact:"High-dose convulsion case report", legal:"Legal US (banned Louisiana)/EU",
+    note:"No standalone human trials; mood claims vendor-only; only data is a 6-ingredient combo trial." },
+
+  // --- Amino acids / dietary ---
+  { name:"L-Theanine", plant:"Camellia sinensis (tea)", region:"E. Asia/Global", alkaloid:"no", chem:"amino acid",
+    fx:{stim:null,mood:null,calm:"D",enh:"D"}, tier:1, dep:"none",
+    interact:"Blunts caffeine BP spike (synergy)", legal:"GRAS US; supplement EU",
+    note:"Documented 'alert calm' — relaxed without sedation, and the caffeine+theanine combination (40 mg + caffeine) outperforms either alone for focused attention. Very clean ≤400 mg/day." },
+
+  { name:"5-HTP", plant:"Griffonia simplicifolia", region:"West Africa", alkaloid:"no", chem:"amino-acid metabolite",
+    fx:{stim:null,mood:"D",calm:"C",enh:null}, tier:2, dep:"none",
+    interact:"Serotonin syndrome with SSRIs/MAOIs (case reports)", legal:"Supplement US; medicinal in parts of EU; EFSA rejected claims",
+    note:"Mood evidence real but low-quality; the interaction risk is the dominant caveat." },
+
+  { name:"L-DOPA (Mucuna)", plant:"Mucuna pruriens (velvet bean)", region:"India/Africa", alkaloid:"no", chem:"amino acid",
+    fx:{stim:null,mood:"C",calm:null,enh:"C"}, tier:2, dep:"low",
+    interact:"Levodopa-class: nausea, dyskinesia, psychosis at dose", legal:"Supplement US; variable dosing",
+    note:"Documented dopaminergic effects in Parkinson's; healthy-user mood/libido claims largely extrapolated. Dopamine-dysregulation case from supplement use exists." },
+
+  { name:"Oral GABA", plant:"fermentation / synthetic-identical", region:"—", alkaloid:"no", chem:"amino acid",
+    fx:{stim:null,mood:null,calm:"X",enh:null}, tier:1, dep:"none",
+    interact:"BP dip", legal:"Supplement US; medicinal in Finland",
+    note:"The debunk case: blood-brain-barrier crossing never demonstrated in humans (efflux 17× influx). 'Natural benzo' marketing is disputed." },
+
+  { name:"L-Tyrosine", plant:"dietary / fermentation", region:"—", alkaloid:"no", chem:"amino acid",
+    fx:{stim:"C",mood:null,calm:null,enh:"D"}, tier:1, dep:"none",
+    interact:"MAOI/thyroid caution", legal:"Legal supplement",
+    note:"Documented context-dependent rescue: cognition under cold/sleep-loss stress (catecholamine depletion). Does little when rested." },
+
+  { name:"Taurine", plant:"meat/fish / synthetic", region:"—", alkaloid:"no", chem:"amino sulfonic acid",
+    fx:{stim:"X",mood:null,calm:null,enh:null}, tier:1, dep:"none",
+    interact:"—", legal:"Legal; energy-drink staple",
+    note:"All 'energy' data come from caffeine combinations; taurine-alone trial actually reduced vigor. Very safe." },
+
+  { name:"Glycine", plant:"dietary / synthetic", region:"—", alkaloid:"no", chem:"amino acid",
+    fx:{stim:null,mood:null,calm:"D",enh:null}, tier:1, dep:"none",
+    interact:"—", legal:"Legal supplement",
+    note:"3 g pre-bed: PSG-confirmed reduced sleep-onset latency (small, Ajinomoto-linked trials). Excellent safety." },
+
+  { name:"SAMe", plant:"fermentation-derived", region:"—", alkaloid:"no", chem:"methionine derivative",
+    fx:{stim:null,mood:"D",calm:null,enh:null}, tier:2, dep:"none",
+    interact:"Mania induction risk; serotonergic caution", legal:"Supplement US; Rx drug in parts of EU",
+    note:"Meta-analysis (N=2,183): SMD −0.58 vs placebo, comparable to TCAs. Real mood evidence, real mania caveat." },
+
+  { name:"Creatine", plant:"meat / synthetic", region:"—", alkaloid:"no", chem:"guanidine",
+    fx:{stim:null,mood:"C",calm:null,enh:"D"}, tier:1, dep:"none",
+    interact:"Creatinine lab artifact", legal:"Legal supplement",
+    note:"Memory under demand (SMD 0.31); 52% vs 26% remission as antidepressant adjunct in one women's RCT. Safe." },
+
+  { name:"L-Tryptophan", plant:"fermentation", region:"—", alkaloid:"no", chem:"amino acid",
+    fx:{stim:null,mood:"D",calm:"D",enh:null}, tier:2, dep:"none",
+    interact:"Serotonergic; 1989 EMS contamination disaster (1,510 cases, 38 deaths)", legal:"Supplement US (banned 1989–2001)",
+    note:"Modest documented mood and sleep effects (≥1 g ↓ wake-after-onset). Safety history is a manufacturing lesson, not molecule toxicity." },
+
+  { name:"Phenibut", plant:"synthetic GABA analog", region:"—", alkaloid:"no", chem:"synthetic GABA-B agonist",
+    fx:{stim:null,mood:"C",calm:"D",enh:null}, tier:3, dep:"high",
+    interact:"Severe withdrawal; CNS-depressant additivity", legal:"FDA: not a dietary ingredient (misbranded); banned Australia",
+    note:"Felt calm/euphoria is real — and dependence and brutal withdrawal are too. Included as the proof-case that blood-brain-barrier crossing changes everything (vs oral GABA)." },
+
+  // --- Enhanced-experience & misc non-alkaloids ---
+  { name:"Thujone (mugwort / absinthe)", plant:"Artemisia vulgaris / absinthium", region:"Eurasia", alkaloid:"no", chem:"monoterpene",
+    fx:{stim:null,mood:null,calm:null,enh:"C"}, tier:3, dep:"none",
+    interact:"GABA-A antagonist convulsant (oil)", legal:"EU caps 35/10 mg/L; US ≤10 ppm thujone",
+    note:"Dream-enhancement claims are pure anecdote; the only RCT showed impairment. 10 mL wormwood oil → seizures/ICU (EMA)." },
+
+  { name:"Myristicin / elemicin (nutmeg)", plant:"Myristica fragrans", region:"Moluccas/Global", alkaloid:"no", chem:"phenylpropene",
+    fx:{stim:null,mood:null,calm:null,enh:"X"}, tier:2, dep:"none",
+    interact:"—", legal:"Legal spice",
+    note:"Culinary doses safe; ≥5 g produces unpleasant 24–48 h delirium with tachycardia — the 'high' is disputed as positive by those who experience it." },
+
+  { name:"Salvinorin A", plant:"Salvia divinorum", region:"Oaxaca, Mexico", alkaloid:"no", chem:"diterpene (KOR agonist)",
+    fx:{stim:null,mood:"X",calm:null,enh:"D"}, tier:3, dep:"low",
+    interact:"—", legal:"~30 US states ban; federal unscheduled",
+    note:"Documented intense psychoactivity (Johns Hopkins RCTs) — but kappa-opioid dissociation is frequently dysphoric; persistent-psychosis case reports. Documented ≠ positive." },
+
+  { name:"Lactucin / lactucopicrin (wild lettuce)", plant:"Lactuca virosa", region:"Europe", alkaloid:"no", chem:"sesquiterpene lactone",
+    fx:{stim:null,mood:null,calm:"X",enh:null}, tier:2, dep:"none",
+    interact:"Anticholinergic-like toxicity case series (8 patients)", legal:"Legal; no EMA monograph",
+    note:"'Opium lettuce' sedation is mice-only; human case series is adverse, not calming." },
+
+  { name:"Nepetalactone (catnip)", plant:"Nepeta cataria", region:"Europe/Asia", alkaloid:"no", chem:"iridoid terpene",
+    fx:{stim:null,mood:null,calm:"C",enh:null}, tier:1, dep:"none",
+    interact:"Pregnancy caution", legal:"Legal herb",
+    note:"Mild traditional calming use; anecdotal only, but harmless." },
+
+  { name:"β-Asarone (calamus)", plant:"Acorus calamus", region:"Asia/Europe", alkaloid:"no", chem:"phenylpropanoid",
+    fx:{stim:"X",mood:null,calm:null,enh:"C"}, tier:3, dep:"none",
+    interact:"Genotoxic carcinogen (rat hepatomas)", legal:"FDA-prohibited food additive",
+    note:"Traditional stimulant/visionary use defeated by carcinogenicity — excluded." },
+
+  { name:"Limonene (inhaled citrus)", plant:"Citrus spp. peel oil", region:"Global", alkaloid:"no", chem:"monoterpene",
+    fx:{stim:null,mood:"C",calm:"D",enh:null}, tier:1, dep:"none",
+    interact:"Oxidized oil = skin sensitizer (topical only)", legal:"Legal",
+    note:"Small aromatherapy RCTs show acute calm/mood effects via olfaction — real but modest and route-specific." },
+
+  { name:"CBD", plant:"Cannabis sativa (hemp)", region:"Global", alkaloid:"no", chem:"cannabinoid",
+    fx:{stim:null,mood:null,calm:"C",enh:null}, tier:2, dep:"none",
+    interact:"CYP inhibition; liver-enzyme elevations at high dose", legal:"Hemp <0.3% THC legal US (2018 Farm Bill); FDA bars supplement claims",
+    note:"WHO 2018: subjective effects largely placebo-like at OTC doses; anxiety RCTs inconsistent (prescription Epidiolex is a separate evidence base)." },
+
+  { name:"THC", plant:"Cannabis sativa", region:"Global", alkaloid:"no", chem:"cannabinoid",
+    fx:{stim:null,mood:"D",calm:"C",enh:"D"}, tier:3, dep:"moderate",
+    interact:"Anxiety/psychosis risk; impaired driving", legal:"Federal Schedule I US (rescheduling pending 2026); state-legal in ~half of US; patchwork EU",
+    note:"Euphoria documented — excluded here on dependence (~10% of users), psychosis risk, and federal status, though legal reality is shifting fast." }
 ];
