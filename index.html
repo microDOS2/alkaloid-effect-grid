@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plant Alkaloid Effect Grid — 4-Class Comparison Matrix</title>
+<title>Natural Compound Effect Grid — 4-Class Comparison Matrix</title>
 <style>
   :root{
     --paper:#efebce;
@@ -99,7 +99,7 @@
 
 <header>
   <div class="bar1">
-    <h1>Plant Alkaloid Effect Grid</h1>
+    <h1>Natural Compound Effect Grid</h1>
     <span class="meta" id="metaLine"></span>
   </div>
   <div class="bar2">
@@ -132,6 +132,7 @@
   <span><b>Effect marks</b>&ensp;<span class="mk D">●</span> Documented&ensp;<span class="mk C">◐</span> Claimed&ensp;<span class="mk X">✕</span> Disputed&ensp;<span class="mk N">·</span> none</span>
   <span><b>Hits</b> = how many of the 4 classes the substance has a <i>documented or claimed</i> effect in (max 4). Disputed ✕ claims are <u>not</u> counted — they are claims that failed testing.</span>
   <span><b>Safety tiers</b>&ensp;1 established safe&ensp;2 borderline + caveats&ensp;3 excluded (shown shaded)</span>
+  <span><b>◦ marker</b> = not a true alkaloid (compound class shown; scope expanded beyond alkaloids 2026-09-19)</span>
   <span class="noprint"><b>Use</b>&ensp;click a row for full detail; click column headers to sort</span>
 </div>
 
@@ -156,7 +157,7 @@
 </div>
 
 <footer>
-  <b>Plant Alkaloid Effect Grid</b> — compiled <span id="fdate"></span> from a multi-agent evidence review (248 referenced sources; companion report: <i>Plant Alkaloids That Are Safe to Consume and Produce Positive Effects</i>).<br>
+  <b>Natural Compound Effect Grid</b> — compiled <span id="fdate"></span> from a multi-agent evidence review (280+ referenced sources; companion report: <i>Plant Alkaloids That Are Safe to Consume and Produce Positive Effects</i>). Scope began as plant alkaloids; expanded to all natural compounds 2026-09-19 (non-alkaloids flagged ◦ with their compound class).<br>
   Educational reference only — not medical advice, not a usage or dosing guide. “Claimed” = traditional use or user reports without human trials. Legal status changes rapidly; verify locally.<br>
   <b>To update:</b> edit <code>data.js</code> (one entry per substance, documented at the top of that file) and reload this page.
 </footer>
@@ -208,7 +209,7 @@
       const tr=document.createElement('tr');
       tr.className='sub'+(d.tier===3?' t3':'');
       tr.innerHTML =
-        `<td class="name">${d.name}${d.alkaloid==='boundary'?'<br><span class="bnd">◦ boundary entry</span>':''}</td>`+
+        `<td class="name">${d.name}${d.alkaloid==='boundary'?'<br><span class="bnd">◦ boundary alkaloid</span>':d.alkaloid==='no'?`<br><span class="bnd">◦ ${d.chem||'non-alkaloid'}</span>`:''}</td>`+
         `<td class="plant">${d.plant}</td>`+
         cell(d.fx.stim)+cell(d.fx.mood)+cell(d.fx.calm)+cell(d.fx.enh)+
         `<td class="mk" style="color:var(--ink)" title="Classes with documented or claimed effect">${hits(d)||'—'}</td>`+
